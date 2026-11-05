@@ -22,9 +22,9 @@ Paste a synthetic customer message saying they cannot find the payment link. Cli
 
 ## 1:10–1:32 · Merchant control
 
-Show an eligible sent invoice. Edit the draft, approve its reminder, and show the recorded outcome. Use footage from an actual accepted Sandbox request.
+Show the actual Activity log entries for the previously accepted reminder on IR-5E03FECA and its executed recommendation. If using earlier footage, identify it as the recorded Sandbox test. For a live interaction shot, demonstrate approval/rejection on a clearly labeled Demo mode invoice. The current real test invoices are settled, so their outgoing reminder controls are correctly blocked.
 
-“I can edit or reject the suggestion. Approval rechecks the invoice with PayPal and claims the action in the database. Duplicate and frequency controls apply before a reminder is sent. The outcome is recorded in the activity log.”
+“The merchant reviews every suggestion. This recorded Sandbox reminder was approved and accepted before the buyer paid. Approval rechecks PayPal and claims the action in the database. Duplicate and frequency controls apply, and the outcome appears in the activity log.”
 
 ## 1:32–1:58 · Different blockers, different actions
 

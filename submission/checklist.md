@@ -32,11 +32,11 @@
 - [x] English project copy prepared in `devpost.md`.
 - [x] English script and shot list prepared for a 2 minute 40 second demonstration.
 - [ ] Confirm eligibility, team details, and any sponsor-specific entry requirements.
-- [ ] Enter project name and tagline.
-- [ ] Paste project description, technology list, and testing instructions.
-- [ ] Add public repository URL and functional demo URL or complete run instructions.
+- [x] Enter and save project name and elevator pitch in the existing Devpost draft.
+- [x] Save the public project story and technology tags; prepare private testing instructions.
+- [x] Save the public repository and hosted demo URLs in Project details.
 - [ ] Provide dedicated test access through the submission's testing instructions.
-- [ ] Upload screenshots of the actual application.
+- [x] Upload one actual application screenshot containing explicitly synthetic demo data.
 - [ ] Record and upload a public YouTube video shorter than three minutes.
 - [ ] Add the video URL and verify it without the owner's login.
 - [ ] Compare every claim with `docs/verification.md` and the final release.
@@ -49,6 +49,6 @@
 | Public repository | https://github.com/727241741sym-afk/invoicerescue-ai |
 | Functional demo | https://invoicerescue-ai.vercel.app/ |
 | Public YouTube video | Pending recording and upload |
-| Devpost project | Pending project form |
+| Devpost project | https://devpost.com/software/invoicerescue-ai (incomplete submission) |
 
 The competition website displayed a submission deadline of November 12, 2026 at noon PST when checked, corresponding to November 13 at 04:00 in Hong Kong. Recheck the official schedule before submitting.

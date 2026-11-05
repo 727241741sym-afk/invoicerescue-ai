@@ -9,6 +9,8 @@ InvoiceRescue AI combines customer replies with authoritative invoice context. I
 - [Public interactive demo](https://invoicerescue-ai.vercel.app/)
 - [Source repository](https://github.com/727241741sym-afk/invoicerescue-ai)
 
+![InvoiceRescue AI synthetic demo dashboard](https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/005/789/894/datas/original.jpg)
+
 The public entry is a clearly labeled synthetic demo. The connected Sandbox workspace requires the authorized merchant login. The hosted application uses Vercel AI Gateway with openai/gpt-4.1-mini and request-scoped OIDC authentication. A complete hosted analysis and database save have been verified. PayPal Sandbox buyer payment and manual reconciliation have also been verified; see [verification evidence](docs/verification.md) for the separate webhook status.
 
 ## Run locally
