@@ -1,6 +1,6 @@
 # Devpost project content
 
-This draft describes the implemented MVP. Complete the release links and hosted-webhook verification items in `checklist.md` before submitting. Use `docs/verification.md` to distinguish exercised integrations from code that still needs a hosted test.
+Copy-ready project content for the tested MVP. Live demo: https://invoicerescue-ai.vercel.app/. Public source: https://github.com/727241741sym-afk/invoicerescue-ai. A public demonstration-video URL and the actual Devpost form still need to be completed. Verification evidence is recorded in docs/verification.md.
 
 ## Project name
 
@@ -24,7 +24,7 @@ The merchant creates or synchronizes USD invoices from PayPal Sandbox, then past
 
 The merchant reviews and edits the recommendation before approving it. Supported outcomes include a PayPal reminder, sharing the existing invoice payment link through a reminder, saving an information-request draft, recording a payment promise, and pausing follow-ups for human review.
 
-PayPal remains the source of invoice payment status. The application rechecks that status before an outgoing reminder. It also contains a verified-webhook processing path that reconciles invoice state, deduplicates events, and blocks pending reminders when the fetched state is settled, closed, or payment-pending.
+PayPal remains the source of invoice payment status. The application rechecks that status before an outgoing reminder. Verified PayPal webhooks reconcile invoice state and deduplicate events. Reconciliation blocks pending reminders when the fetched state is settled, closed, or payment-pending. A real hosted Sandbox payment updated the invoice to Paid and zero outstanding without a manual PayPal refresh.
 
 A separate interactive demo contains synthetic invoices and preset analyses. It is clearly labeled, can be reset, and keeps changes in the visitor's browser.
 
@@ -32,7 +32,7 @@ A separate interactive demo contains synthetic invoices and preset analyses. It 
 
 The application uses Next.js App Router, TypeScript, Tailwind CSS, a shadcn-style button component, and Lucide icons. Supabase provides PostgreSQL and merchant authentication. Ownership-based row-level security restricts browser reads, while server authorization gates writes and internal database functions.
 
-PayPal Invoicing REST API v2 supplies real Sandbox invoice creation, retrieval, synchronization, sending, and reminder operations. The webhook handler uses PayPal signature verification before processing events. A real Sandbox creation event exposed the nested invoice payload shape, which was added to the handler and regression tests. Payment-event verification is tracked separately in the verification record.
+PayPal Invoicing REST API v2 supplies real Sandbox invoice creation, retrieval, synchronization, sending, and reminder operations. The webhook handler uses PayPal signature verification before processing events. Real Sandbox creation, sending, and payment events have passed signature verification and processing on the hosted application. The first creation event exposed the nested invoice payload shape, which was corrected and added to regression tests before the payment test.
 
 AI analysis uses the OpenAI Responses API format with a strict JSON schema and Zod validation. The hosted build connects to Vercel AI Gateway using `openai/gpt-4.1-mini` with request-scoped OIDC authentication. A real hosted analysis and database save have been verified. The provider endpoint and model remain configurable for local development. Supporting quotes must exactly match the supplied message, and backend code controls the available actions.
 
@@ -40,7 +40,7 @@ Codex assisted with implementation, debugging, test creation, and documentation.
 
 ## Challenges we ran into
 
-Payment events require careful interpretation. An invoice-paid event can involve partial or pending payment, so the handler fetches the current invoice before deciding what changed.
+Payment events require careful interpretation. An invoice-paid event can involve partial or pending payment, so the handler fetches the current invoice before deciding what changed. Our first real notification also revealed that PayPal nests the invoice inside the event resource. Testing the hosted listener exposed that mismatch before the final payment check.
 
 Retries and concurrent clicks create a second challenge. We persist operation IDs, payload hashes, approval claims, reminder budgets, and uncertain outcomes in PostgreSQL. Database functions use locks to keep repeated approvals and event deliveries consistent.
 
@@ -48,7 +48,7 @@ Moving from local development to a hosted app introduced a provider boundary: th
 
 ## Accomplishments that we're proud of
 
-We connected a working interface to PayPal Sandbox invoice creation and real AI analysis, with exact supporting evidence visible to the merchant. We also completed a USD 1.00 Sandbox buyer payment and manually reconciled the invoice to Paid with zero outstanding and further reminders blocked. The application makes a recommendation reviewable before it can produce an external action.
+We connected a working interface to PayPal Sandbox invoice creation and real AI analysis, with exact supporting evidence visible to the merchant. We completed a USD 1.00 Sandbox buyer payment and verified that a signed PayPal payment notification automatically reconciled the hosted invoice to Paid with zero outstanding and further reminders blocked. The application makes a recommendation reviewable before it can produce an external action.
 
 We also built and exercised policy tests, webhook boundary tests, entry-point access tests, and rollback-only database regression checks. The tests cover pending and partial payments, payment promises, invented evidence, malicious links, duplicate claims, uncertain outcomes, and stale reconciliation.
 
@@ -78,6 +78,6 @@ Open https://invoicerescue-ai.vercel.app/ or follow https://github.com/727241741
 4. To test connected functionality, open the Sandbox workspace using the dedicated application test account supplied in the submission's testing instructions.
 5. Create a USD invoice for a PayPal Sandbox buyer. Paste a customer message to run the configured AI provider.
 6. Review the draft and approve the permitted action. An unsent draft blocks outgoing reminders until it has been sent.
-7. For the payment scenario, use a Sandbox Personal buyer. Synchronize the invoice or observe the configured webhook update after payment.
+7. For the payment scenario, use a Sandbox Personal buyer. After payment, wait for the verified webhook and dashboard refresh. Further reminders are blocked once PayPal confirms settlement.
 
 Keep the AI service, hosted application, and test access available for the complete judging period. Credentials required by a particular environment must be supplied through the designated testing-access mechanism.

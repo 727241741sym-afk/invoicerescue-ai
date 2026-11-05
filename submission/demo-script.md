@@ -1,6 +1,6 @@
 # Demonstration script
 
-Target duration is 2 minutes 40 seconds. Record actual application screens. A real USD 1.00 Sandbox buyer payment and manual reconciliation are verified. A real webhook remains unverified; record its corresponding shot only after a hosted test succeeds. If a step remains unverified, record its actual state and update the narration to match.
+Target duration is 2 minutes 40 seconds. Record actual application screens. Real USD 1.00 Sandbox buyer payments, manual reconciliation, and hosted signed-payment-webhook reconciliation are verified. Record the current public application at https://invoicerescue-ai.vercel.app/. Keep each narration claim consistent with docs/verification.md.
 
 ## 0:00–0:18 · The problem
 
@@ -34,9 +34,9 @@ Show a dispute example and a payment promise. Keep the Demo mode badge visible i
 
 ## 1:58–2:23 · Payment closes the loop
 
-Show the verified paid invoice IR-5E03FECA and blocked reminders; docs/screenshots/sandbox-paid.jpg records the observed result. Use actual payment footage if available, or record another user-operated Sandbox payment. Show the processed real webhook event in a separate verified test view only after one has been received.
+Show verified paid invoice IR-E3B7428F in the hosted workspace and its blocked-reminder notice; docs/screenshots/cloud-webhook-paid.jpg records the observed result. Show its actual Activity log transition. The signed INVOICING.INVOICE.PAID event was processed and changed the database without a manual PayPal refresh. Use existing actual payment footage if available; otherwise show the verified result and describe the completed test. Do not simulate payment while presenting the shot as a real buyer payment.
 
-“After the Sandbox buyer pays, the application reconciles with PayPal. Payment events can include partial or pending payments, so the current invoice determines the result. Once it is settled, pending reminders are blocked.”
+“The Sandbox buyer completed this payment. A verified PayPal webhook automatically reconciled the hosted invoice. Payment events can include partial or pending payments, so the current invoice determines the result. Once it is settled, pending reminders are blocked.”
 
 ## 2:23–2:40 · Safe boundaries and ending
 

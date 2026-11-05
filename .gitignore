@@ -9,4 +9,7 @@ test-results/
 !.env.example
 .DS_Store
 *.tsbuildinfo
+docs/screenshots/
+STATUS.md
+scripts/login-vercel.command
 .vercel

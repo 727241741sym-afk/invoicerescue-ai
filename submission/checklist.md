@@ -5,9 +5,9 @@
 - [x] Application source, exact dependencies, and lockfile prepared.
 - [x] MIT license included.
 - [x] README, environment template, architecture, and test instructions prepared.
-- [ ] Create or connect a public GitHub repository and push the reviewed source.
-- [ ] Confirm the repository detects its license and that the README opens correctly.
-- [ ] Check the committed file list for credentials, test login details, and sensitive screenshots.
+- [x] Create a public GitHub repository and push the reviewed source.
+- [x] Confirm GitHub identifies the MIT license and the published README.
+- [x] Scan the published source for configured credentials; exclude test login details, environment values, and account screenshots.
 
 ## Functional release
 
@@ -22,7 +22,7 @@
 - [x] Finish real Sandbox invoice send and reminder acceptance verification.
 - [x] Complete a payment with the Sandbox Personal buyer; manually reconcile PAID, zero outstanding, and blocked further reminders.
 - [x] Register a reachable HTTPS webhook endpoint on the correct PayPal app.
-- [ ] Verify a real invoice-payment event passes signature verification, is processed once, and updates the dashboard.
+- [x] Verify a real invoice-payment event passes signature verification and automatically updates the hosted invoice and dashboard. Real-event replay requests were accepted and subsequent database reads showed no repeated reconciliation.
 - [x] Complete responsive and production-browser checks after final changes.
 - [x] Deploy the connected app to Vercel and verify hosted Gateway analysis plus database persistence.
 - [ ] Keep application and testing access available through the judging period.
@@ -46,7 +46,7 @@
 
 | Item | Value |
 | --- | --- |
-| Public repository | https://github.com/727241741sym-afk/invoicerescue-ai (source publication in progress) |
+| Public repository | https://github.com/727241741sym-afk/invoicerescue-ai |
 | Functional demo | https://invoicerescue-ai.vercel.app/ |
 | Public YouTube video | Pending recording and upload |
 | Devpost project | Pending project form |

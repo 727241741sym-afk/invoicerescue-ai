@@ -1,74 +1,81 @@
 # Verification evidence
 
-Verified on November 5, 2026, in the local desktop workspace.
+Verified on November 5, 2026. Public release: https://invoicerescue-ai.vercel.app/. Source: https://github.com/727241741sym-afk/invoicerescue-ai.
 
 ## Automated checks
 
 | Check | Observed result |
 | --- | --- |
-| `pnpm typecheck` | Passed |
+| `pnpm typecheck` | Passed after the final webhook correction |
 | `pnpm test` | 51 passed across 5 files |
-| `pnpm build` | Passed, including all pages, API routes, and session proxy |
-| `pnpm test:e2e` against production | 5 passed |
-| `tests/database-regressions.sql` | Passed, with all synthetic records rolled back |
-| Source secret scan | Passed for the configured PayPal secret, AI key, Supabase server key, and application login password |
+| `pnpm build` | Passed after the final webhook correction |
+| Cloud production build | READY with Node.js 24.x, pnpm 11.25.0 and pinned dependencies |
+| `pnpm test:e2e` on the public domain | 5 passed without Vercel bypass credentials |
+| `tests/database-regressions.sql` | Passed, with synthetic regression rows rolled back |
+| Source secret scan | No exact configured secret values in published source |
+| Production runtime error/fatal scan | No matching records in the checked release window |
 
-The first restricted build attempt could not open a local port used by the stylesheet compiler. Running the build with the required local process permissions succeeded. API request tests were repeated against the built production server after the final code changes.
+The five public API checks cover the synthetic demo, anonymous merchant-read denial, cross-site write denial, same-origin unauthenticated denial, and unsigned-webhook rejection. A staged cloud check additionally signed in with the dedicated merchant, loaded the real workspace, verified the existing paid invoice, ran a full Gateway analysis, and confirmed its evidence-backed recommendation was saved in Supabase.
 
 ## Browser and service checks
 
 | Flow | Evidence |
 | --- | --- |
-| Public demo | Rendered six synthetic invoices, preset recommendations, filters, and approval controls |
-| Merchant login | Local development sign-in opened the authorized workspace. The same session opened the production workspace |
-| Real Sandbox invoice creation | Application UI created draft IR-A38C19CA with PayPal ID INV2-GSQZ-2UEH-ZCDD-APY9 and USD 25.00 |
-| Designated buyer invoice | Application UI created USD 1.00 invoice IR-5E03FECA, PayPal ID INV2-VCPS-53TD-8U6J-LWWU, for the supplied Sandbox Personal buyer |
-| Real invoice sending | Merchant-approved send succeeded and PayPal returned SENT |
-| Real reminder acceptance | A real missing-link analysis was approved through the UI. PayPal accepted the reminder, the operation became succeeded, and the recommendation became executed |
-| Real buyer payment | User completed the USD 1.00 Sandbox payment. PayPal's hosted page displayed payment success |
-| Real paid reconciliation | Refresh status in the production app fetched PAID and USD 0.00 outstanding. UI displayed that further reminders are blocked. An independent database read confirmed status PAID and due_cents = 0 |
-| Real missing-link analysis | Model returned missing_payment_link, exact customer evidence, and resend_payment_link |
-| Draft reminder protection | Reminder approval was disabled while the invoice remained DRAFT |
-| Real prompt-injection analysis | Model returned unknown, confidence 0.12, and human review. The invoice remained DRAFT with the same amount |
-| Human-review approval | Activity log recorded merchant approval, and the invoice's application reminder state became paused |
-| Real payment promise | Model identified 2026-11-13. Approval saved it, and the production UI showed suppression through that date |
-| Synthetic paid scenario | Demo invoice changed to Paid, due amount became zero, pending suggestion became blocked, and reminder approval was disabled |
-| Desktop layout | Checked at 1440×1000 |
-| Mobile layout | Checked at 390×844. Content scroll width matched client width after correcting an escaped table accessibility label |
+| Public demo | Rendered synthetic invoices, preset recommendations, filters, approval controls, and explicit simulation labels |
+| Hosted merchant entry | Open Sandbox redirected to the app login; the dedicated merchant signed in and opened the hosted workspace |
+| Hosted Gateway connection | Connections displayed Vercel AI Gateway and openai/gpt-4.1-mini |
+| Real invoice creation | The app created USD 25.00 fictional-recipient draft IR-A38C19CA and the USD 1.00 designated-buyer test invoices |
+| Invoice sending | Approved send succeeded for IR-5E03FECA and, with separate explicit approval, IR-E3B7428F |
+| Reminder acceptance | A real missing-link analysis was approved; PayPal accepted the reminder, the operation became succeeded, and the recommendation became executed |
+| First buyer payment | The user paid IR-5E03FECA; manual Refresh status reconciled it to PAID and zero outstanding |
+| Hosted automatic payment update | The user paid IR-E3B7428F; the signed PAID webhook reconciled it to PAID and zero outstanding without a manual PayPal sync |
+| Settled reminder protection | Hosted invoice details displayed the blocked-reminder notice after settlement |
+| Earlier local injection check | A real provider returned unknown, low confidence, and human review; approving review paused app reminders |
+| Earlier local payment promise | A real provider identified 2026-11-13; approval persisted that date and the UI displayed suppression through it |
+| Desktop and mobile | Checked at 1440×1000 and 390×844; the corrected mobile layout had matching scroll/content width |
 
-The earlier USD 25 Sandbox draft's recipient, buyer@example.com, is fictional. It remains unsent. The later USD 1 invoice uses the buyer designated by the user and has verified send, reminder acceptance, buyer payment, and manual reconciliation to PAID. Recipient delivery of the notification has not been independently checked. The payment update was retrieved by the app's Refresh status action, rather than a real webhook event.
+The UI uses browser-local synthetic records only in Demo mode. Sandbox records are real test API records. The fictional-recipient drafts remain unsent and are not presented as collected revenue. The two completed USD 1.00 payments are Sandbox funds. Recipient delivery of the reminder notification was not independently checked.
 
-The AI endpoint used for the exercised connected analyses is local CLIProxyAPI using its advertised gpt-6-luna alias. Those live tests confirm functional structured output through that endpoint. They do not independently establish the proxy's upstream model identity.
+## AI provider verification
 
-The user selected Vercel AI Gateway for deployment. The initial catalog check found openai/gpt-6-luna, but a live call established that it is unavailable on the free tier. The selected hosted model is now the verified free-tier-eligible openai/gpt-4.1-mini. Gateway integration uses a dedicated key or the current request's OIDC token through @vercel/oidc 4.0.6. Tests cover credential separation, fresh token retrieval, missing authentication, explicit model configuration, and sanitized actionable provider errors. Typecheck, all 51 unit tests, and the production build passed after the integration change. The model-level live Gateway check below passed after deployment-tool login. The working local proxy configuration is preserved pending full application verification. Dashboard-log inspection remains pending. The user completed free-credit activation and the dashboard displayed USD 5.00 Free Credit. Project invoicerescue-ai was created with OIDC enabled. The initial smoke test failed while refreshing the old local token. After the user refreshed the CLI login, the subsequent live request and usage were verified as described below.
+Earlier local development exercised the user's CLIProxyAPI at http://127.0.0.1:8317/v1 using its advertised gpt-6-luna alias. Those checks established functional structured output, not the proxy's underlying model identity. The local proxy key is not an official-provider key and was not uploaded to Vercel.
 
-## Database regression coverage
+The hosted release uses Vercel AI Gateway and per-request OIDC through @vercel/oidc 4.0.6. The live model catalog contained openai/gpt-6-luna, but a request returned 403 because that model was excluded from free-credit access. The official directory marked openai/gpt-4.1-mini eligible. A strict-schema request to that model completed with missing_payment_link and an exact synthetic-message quote (69 input and 19 output tokens).
 
-The rollback-only script checks first and duplicate operation claims, conflicting payloads, duplicate approvals, uncertain reminder outcomes, cooldown consumption, pending-payment protection, settled-state protection, out-of-order reconciliation, event deduplication, failed event retry, processed-event idempotency, browser role restrictions, atomic replacement of older pending analyses, and dispute-driven pauses.
+The full hosted app then ran its complete analysis schema, Zod validation, exact quote checking, backend action mapping, and database save successfully. Tests cover key separation, current-token retrieval on each request, missing authentication, explicit Gateway model configuration, and sanitized actionable service errors. No permanent Gateway key was created. Gateway dashboard-log inspection is separate from the observed API and application checks.
 
-The webhook unit tests mock PayPal signature verification to exercise invalid signatures, arbitrary certificate hosts, processed duplicates, concurrent duplicates, and reconciliation using current invoice state. A real registered-app event has not yet been received by a hosted endpoint.
+## Real webhook verification
 
-## Observed advisories
+The same PayPal Sandbox REST application has an HTTPS listener at https://invoicerescue-ai.vercel.app/api/paypal/webhook, registered for eight invoice event types.
 
-- The internal ai_runs and webhook_events tables have RLS enabled with no policies. Browser roles have no grants on them. Internal server calls use the service role.
-- Supabase reports that leaked-password protection is disabled in this project's default Auth configuration. Review the [password protection setting](https://supabase.com/docs/guides/auth/password-security#password-strength-and-leaked-password-protection) before broader account access.
-- Supabase reports four remaining composite foreign-key index opportunities and unused indexes in the small new database. See its [foreign-key index guidance](https://supabase.com/docs/guides/database/database-linter?lint=0001_unindexed_foreign_keys). Current policy and state tests passed.
-- A transient development hot-reload promise error was observed during code replacement. Production pages were reloaded and exercised after a successful build.
+The first signed CREATED notification exposed a mismatch in the initial fixture: the real invoice ID is nested in resource.invoice.id. The original handler acknowledged that initial creation event without reconciliation. The corrected handler extracts the nested ID, retains support for direct shapes, and returns a retryable error if a verified invoice event lacks a valid ID. Regression tests cover the observed shape and the missing-ID failure.
 
-## Remaining verification
+The final deployed handler processed these real events:
 
-A verified real payment webhook and the final cloud deployment remain to be exercised. These are recorded as pending in the submission checklist. Public repository and YouTube URLs are also pending.
+| Event | Invoice | Observed result |
+| --- | --- | --- |
+| CREATED · WH-7DD50607LT7651225-7WF89690HX837863V | IR-97AEC7C5 | Signature verified, event processed, reconciliation timestamp advanced |
+| SENT · WH-9N2926799R233300R-9GB32318E6838644G | IR-E3B7428F | Signature verified, authoritative SENT status fetched |
+| PAID · WH-6HA39187SC552270U-8B5100327D495590W | IR-E3B7428F | Signature verified, current PayPal invoice fetched, database changed to PAID with due_cents = 0 |
 
-## Screenshots
+The PAID reconciliation timestamp was 08:33:39.242 UTC; the event's processed_at was 08:33:41.033 UTC. A read-only database query and the hosted browser confirmed the result before any manual PayPal sync. The browser was reloaded to read database state; the app also polls workspace reads every 15 seconds while visible.
 
-Screenshots named in this record are retained as local verification artifacts. The public source excludes account and billing screenshots. Review the live application for the current public interface.
+PayPal accepted real CREATED and PAID replay requests with HTTP 202. Follow-up database reads retained one event row and the original processed_at/reconciled_at values. Final paid balance remained zero. The unit/database tests additionally exercise concurrent duplicates, failed retries, lease expiry, and stale state protection.
 
-## Live Gateway check
+Actual partial-payment, pending-payment, and out-of-order live PayPal events were not separately generated. Their mappings and transitions were tested through policy and rollback-only database regressions. Preserve that distinction in the demonstration.
 
-After the user refreshed the official CLI login, project/team OIDC authentication succeeded. openai/gpt-6-luna returned a free-tier model-access 403. The official directory marked openai/gpt-4.1-mini as free-tier eligible. A subsequent real strict-schema Responses request to that model completed with classification missing_payment_link and an exact synthetic-message quote (69 input and 19 output tokens). Full application analysis through Gateway, production deployment, and dashboard-log inspection remain pending. Deploy dry-run excluded all local environment files and screenshots. Transferring PayPal/Supabase secrets to the precise Vercel production destination requires explicit user authorization after the automatic approval review rejection.
+## Source and deployment boundaries
 
-## Hosted release verification
+The user explicitly authorized sending existing PayPal Sandbox and Supabase server credentials to the production environment of the exact invoicerescue-ai Vercel project. Private values are stored as Secrets; public connection values are Config. Preview deployments were not given these credentials. No merchant login password was uploaded. Deployment dry-run excluded local environment files, account screenshots, build output, and internal status. Local secret files remain ignored and mode 600.
 
-The public application is https://invoicerescue-ai.vercel.app/. The staged production build passed anonymous access denial, cross-site mutation denial, authenticated workspace loading, preservation of the paid USD 1 invoice, and a full Gateway analysis that saved exact evidence in Supabase. All five Playwright API entry checks passed against the public domain without deployment-protection bypass credentials. Browser checks opened the public synthetic demo, followed Open Sandbox to the application login, signed in with the dedicated merchant, and confirmed the hosted Gateway model plus Paid/zero outstanding/reminder blocking. Screenshots are cloud-demo.jpg and cloud-paid.jpg.
+The GitHub connector could read the new repository but rejected a tree write. The previously configured official GitHub CLI was restored, and source publication succeeded through the user's existing keyring login. The public repository was verified to use the MIT license. No new GitHub token or broader integration permission was created.
 
-The PayPal webhook was registered on the same Sandbox application for eight Invoicing invoice event types. The first real CREATED event passed signature verification and was persisted, but exposed a nested resource.invoice.id shape absent from the earlier test fixture. That initial event was acknowledged without reconciliation. The handler was corrected to extract the nested invoice ID and to leave an invoice event retryable if no valid invoice ID exists. Two regression tests were added; typecheck, all 51 unit tests, and the production build passed. A new live-event check of the corrected handler is in progress. An actual paid webhook remains unverified until the buyer pays a newly sent test invoice.
+## Observed advisories and remaining submission work
+
+- Internal ai_runs and webhook_events tables intentionally have RLS with no browser grants/policies.
+- Supabase leaked-password protection is disabled in the project's default Auth settings. Review it before broader account onboarding.
+- Four composite foreign-key index opportunities and unused indexes were reported for the small new database.
+- The public YouTube demonstration video, entrant eligibility/team details, private judge-testing access, and actual Devpost form are not completed by this release verification.
+- Keep the application and required services available throughout judging.
+
+Screenshots are retained locally under docs/screenshots, including cloud-demo.jpg, cloud-paid.jpg, and cloud-webhook-paid.jpg. Account/billing screenshots and local environment values are excluded from the public source.
