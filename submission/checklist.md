@@ -31,11 +31,11 @@
 
 - [x] English project copy prepared in `devpost.md`.
 - [x] English script and shot list prepared for a 2 minute 40 second demonstration.
-- [ ] Confirm eligibility, team details, and any sponsor-specific entry requirements.
+- [x] Entrant supplied personal/eligibility responses; technical sponsor/tool responses were saved. Final Rules/Terms acceptance remains with the entrant.
 - [x] Enter and save project name and elevator pitch in the existing Devpost draft.
 - [x] Save the public project story and technology tags; prepare private testing instructions.
 - [x] Save the public repository and hosted demo URLs in Project details.
-- [ ] Provide dedicated test access through the submission's testing instructions.
+- [x] Save owner-authorized dedicated application test access in the private judge-testing field.
 - [x] Upload one actual application screenshot containing explicitly synthetic demo data.
 - [ ] Record and upload a public YouTube video shorter than three minutes.
 - [ ] Add the video URL and verify it without the owner's login.

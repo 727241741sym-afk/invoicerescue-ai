@@ -11,9 +11,9 @@
 
 Project overview 已保存專案名稱與 Elevator pitch。Project details 已保存完整英文故事、技術標籤、網站與 GitHub 連結，以及一張標明模擬資料的公開示範畫面。影片網址仍空白，參賽項目仍是草稿。
 
-Additional info 的技術需求說明、AI 工具說明、New、原始碼與網站網址已準備。這一頁的個人題目需要你本人填寫，再按 Save & continue 保存。
+Additional info 的技術需求說明、AI 工具說明、原始碼與網站網址，以及你本人填寫的個人資料均已保存。你已授權的專用應用程式測試帳密也已填入私人評審欄位。Devpost 目前顯示 3/5 步驟完成；主要還缺影片網址及最後的條款確認與提交。
 
-## 你需要親自填的題目
+## 你已親自填寫、提交前需複核的題目
 
 1. Submitter Type、Country of Residence，以及適用的加拿大省份／組織名稱；不適用的欄位按照表單說明填 N/A。
 2. PayPal 整合體驗分數與原因、是否願意接受後續訪問。
