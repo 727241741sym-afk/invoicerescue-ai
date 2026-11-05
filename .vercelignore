@@ -1,0 +1,14 @@
+.env*
+.git/
+.next/
+node_modules/
+coverage/
+playwright-report/
+test-results/
+*.tsbuildinfo
+docs/
+submission/
+tests/
+scripts/
+STATUS.md
+AGENTS.md
